@@ -95,5 +95,3 @@ python coolweb.py
 ```shell
 rrdtool create temp.rrd --step 5 DS:tempInside:GAUGE:600:-50:30 DS:energy:GAUGE:600:0:500 RRA:MAX:0.5:1:1440
 ```
-
-### graph.sh:
