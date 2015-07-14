@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+{% for image in images %}
+<img src="data:image/jpg;base64,{{ image }}">
+{% endfor %}
+
+{% endblock %}
+

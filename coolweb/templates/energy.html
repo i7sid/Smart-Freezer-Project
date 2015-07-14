@@ -1,0 +1,116 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Stromverbrauch der letzten 30 Tage [Wh]
+        </div>
+
+        <div class="panel-body">
+            <canvas id="myChart" style="width: 100%; height: 250px;"></canvas>
+        </div>
+
+    </div>
+
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Stromverbrauch aufgeschlüsselt [Wh]
+        </div>
+
+        <div class="panel-body">
+            <table class="table table-condensed table-striped">
+                <thead>
+                <tr>
+                    <th>Stunde</th>
+                    <th></th>
+
+                    {% for day, val in res.iteritems() %}
+                        <th>{{ day }}</th>
+                    {% endfor %}
+                </tr>
+                </thead>
+
+                <tbody>
+
+                {% for d in range(0, 24) %}
+                    <tr>
+                        <td>{{ "%02d"|format(d) }}-{{ "%02d"|format(d+1) }}</td>
+                        <td>
+                            Verbrauch<br>
+                            Ct/kWh (EPEX)<br>
+                            Ct/kWh (Std)<br>
+                            Ct (EPEX)<br>
+                            Ct (Std)<br>
+                            Solltemperatur
+                        </td>
+
+                        {% for day, val in res.iteritems() %}
+                            {% set tmp = res[day] %}
+                            <td>
+                                {{ tmp[d]['consumption'] }}<br>
+                                {{ tmp[d]['kwh_epex'] }}<br>
+                                {{ tmp[d]['kwh_std'] }}<br>
+                                {{ tmp[d]['cost_epex'] }}<br>
+                                {{ tmp[d]['cost_std'] }}<br>
+                                {{ tmp[d]['temp_set'] }} °C
+                            </td>
+
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+
+                  <tr>
+                    <td>Gesamt</td>
+                    <td>
+                      Ct (EPEX)<br>
+                      Ct (Std)
+                    </td>
+
+                    {% for day in total %}
+                      <td>
+                        {{ total[day]['epex' ] }}<br>{{ total[day]['std'] }}
+                      </td>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+
+
+
+
+{% endblock %}
+
+{% block script %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+
+    <script>
+
+        $(function () {
+            var data = {
+                labels: {{ days|safe }},
+                datasets: [
+                    {
+                        label: "My First dataset",
+                        fillColor: "rgba(151,187,205,0.5)",
+                        strokeColor: "rgba(151,187,205,0.8)",
+                        highlightFill: "rgba(151,187,205,0.75)",
+                        highlightStroke: "rgba(151,187,205,1)",
+                        data: {{ cons|safe }}
+                    }
+                ]
+            };
+
+            var ctx = $("#myChart").get(0).getContext("2d");
+
+            var myBarChart = new Chart(ctx).Bar(data);
+        });
+
+    </script>
+{% endblock %}

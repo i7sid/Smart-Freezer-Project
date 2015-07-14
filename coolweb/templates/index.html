@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Innentemperatur Verlauf
+        </div>
+	<div class="panel-body">
+		<img src="data:image/jpg;base64,{{ temp_graph1 }}">
+        </div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		Stromverbrauch [Wh]
+	</div>
+
+	<div class="panel-body">
+		<img src="data:image/jpg;base64,{{ temp_graph2 }}">
+	</div>
+</div>
+
+<div class="panel panel-default">
+        <div class="panel-heading">
+            Regeltemperatur (Untergrenze) einstellen
+        </div>
+
+        <div class="panel-body">
+            <form class="form-inline" method="post">
+                <div class="form-group">
+                    <label for="ctrlTemp">
+                        Temperatur in °C:
+                    </label>
+                    <input class="form-control" type="number" step="0.5" min="-40" max="25" id="ctrlTemp"
+		    name="ctrlTemp" value="{{ temp_set }}">
+                </div>
+                <button type="submit" class="btn btn-primary">Temperatur setzen</button>
+            </form>
+
+        </div>
+    </div>
+{% endblock %}

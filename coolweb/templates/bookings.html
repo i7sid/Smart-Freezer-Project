@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<div class="pull-right">
+  <a href="{{ url_for('accounting') }}">
+    <button type="submit" class="btn btn-primary">
+      Zurück
+    </button>
+  </a>
+</div>
+
+<br><br>
+
+
+<div class="panel panel-default">
+<div class="panel-heading">Buchungen für Benutzer <i>{{ user.name }}</i></div>
+<div class="panel-body">
+  {% if bookings|length > 0 %}
+  <form class="form-inline" method="post">
+  <div class="form-group">
+    <label for="count">Ausgleichsbuchung hinzufügen</label>
+    <input type="number" name="count" id="count" value="-{{ user.bookingcount }}">
+  </div>
+  <button type="submit" class="btn btn-default">buchen</button>
+</form>
+
+    <br>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Datum</th>
+          <th>Anzahl</th>
+          <th>Typ</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for booking in bookings %}
+          <tr>
+            <td>{{ booking.booking_date }}</td>
+            <td>{{ booking.count }}</td>
+            <td>
+              {% if booking.type == 1 %}
+                Sensor
+              {% endif %}
+              {% if booking.type == 2 %}
+                Ausgleichsbuchung
+              {% endif %}
+
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+  {% endif %}
+</div>
+</div>
+
+{% endblock %}

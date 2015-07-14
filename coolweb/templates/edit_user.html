@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<a href="{{ url_for('enroll', user_id=user.id) }}">
+  <button type="submit" class="btn btn-success">
+    Neuen Fingerabdruck hinterlegen
+  </button>
+</a>
+
+<div class="pull-right">
+  <a href="{{ url_for('accounting') }}">
+    <button type="submit" class="btn btn-primary">
+      Zurück
+    </button>
+  </a>
+</div>
+
+<br><br>
+
+
+<div class="panel panel-default">
+<div class="panel-heading">Fingerabdrücke für Benutzer <i>{{ user.name }}</i></div>
+<div class="panel-body">
+  {% for fingerprint in user.fingerprints %}
+    #{{ fingerprint }}
+    <a href="{{ url_for('remove_fingerprint', fingerprint_id=fingerprint) }}">
+      <span class="glyphicon glyphicon-trash" style="color: red"></span>
+    </a>
+    <br>
+  {% else %}
+    <i>- noch keine Fingerabdrücke hinterlegt -</i>
+  {% endfor %}
+</div>
+</div>
+
+
+<div class="panel panel-default">
+<div class="panel-heading">Benutzer <i>{{ user.name }}</i> editieren</div>
+<div class="panel-body">
+  <form method="post">
+    <div class="form-group">
+  <label for="name">Name:</label>
+  <input required="required" value="{{ user.name }}" name="name" type="text" class="form-control" id="name" placeholder="Name">
+</div>
+<button type="submit" class="btn btn-default">Bearbeiten</button>
+  </form>
+</div>
+</div>
+
+{% endblock %}
